@@ -1,0 +1,1 @@
+* * * * * root python /bin/monitor.py >> /var/log/monitor.log

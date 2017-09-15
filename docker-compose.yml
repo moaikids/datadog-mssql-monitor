@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mssql-monitor:
+    build: ./
+    container_name: mssql-monitor
+    env_file:
+      - credentials.env
+    links:
+      - mssql:mssql
+  mssql:
+    image: "microsoft/mssql-server-linux"
+    container_name: mssql
+    ports:
+      - 1433:1433
+    environment:
+      SA_PASSWORD: "VeryVerySecret@"
+      ACCEPT_EULA: "Y"

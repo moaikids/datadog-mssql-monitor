@@ -1,0 +1,11 @@
+metrics_name: sql_server.custom.hoge.fuga
+monitor_sql: |
+    SELECT 
+        count(*)
+    FROM 
+        sys.databases;
+monitor_value_position: 0
+dd_tags:
+    env: prd
+    project: hoge
+    application: mssql
