@@ -18,18 +18,17 @@ This script run on the Docker container.
 If you want to add monitoring, add yaml file into `conf.d/` directory.
 
 ```example:yaml
-metrics_name: azure.sql_server_database.custom.moaikids.count_in_1m
+metrics_name: sql_server.custom.hoge.fuga
 monitor_sql: |
-    SELECT
+    SELECT-
         count(*)
-    FROM
-        dbo.moaikids
-    WHERE
-        StatusTime > DATEADD(minute, -1, SYSDATETIMEOFFSET());
+    FROM-
+        sys.databases;
 monitor_value_position: 0
 dd_tags:
     env: prd
-    application: moaikids
+    project: hoge
+    application: mssql
 ```
 
 
