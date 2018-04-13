@@ -3,11 +3,13 @@ import glob
 import argparse
 import pymssql
 import yaml
+import concurrent.futures
 from datetime import datetime
 from datadog import initialize
 from datadog import api
 
-def monitor():
+def monitor(server):
+    print("server : {0}".format(server))
     currentdir = os.path.dirname(os.path.abspath(__file__))
     for monitor_conf in glob.glob(currentdir + "/conf.d/*.yaml"):
         print("  monitor it : {0}".format(monitor_conf))
@@ -19,7 +21,7 @@ def monitor():
         ## db
         ### currently specific use of MSSQL
         conn = pymssql.connect(
-                 server=os.environ['MSSQL_SERVER'],
+                 server=server,
                  port=os.environ['MSSQL_PORT'],
                  user=os.environ['MSSQL_USER'],
                  password=os.environ['MSSQL_PASSWORD'],
@@ -46,11 +48,10 @@ def monitor():
         print("")
         conn.close()
 
-
 def metric_to_datadog(metric_name, value, host, tags):
     print("    metric : {0}: {1}".format(metric_name, value)) 
     print("    tags : {0}".format(tags))
-    api.Metric.send(metric=metric_name, points=value, host=host, tags=tags)
+    #api.Metric.send(metric=metric_name, points=value, host=host, tags=tags)
 
 # datadog
 dd_api_key = os.environ['DATADOG_API_KEY']
@@ -65,6 +66,9 @@ initialize(**options)
 print("exec at {0}".format(datetime.now()))
 print("")
 
-monitor()
+mssql_servers = os.environ['MSSQL_SERVER']
+executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
+for mssql_server in mssql_servers.split(','):
+    executor.submit(monitor,mssql_server)
 
 
