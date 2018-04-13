@@ -51,7 +51,7 @@ def monitor(server):
 def metric_to_datadog(metric_name, value, host, tags):
     print("    metric : {0}: {1}".format(metric_name, value)) 
     print("    tags : {0}".format(tags))
-    #api.Metric.send(metric=metric_name, points=value, host=host, tags=tags)
+    api.Metric.send(metric=metric_name, points=value, host=host, tags=tags)
 
 # datadog
 dd_api_key = os.environ['DATADOG_API_KEY']
