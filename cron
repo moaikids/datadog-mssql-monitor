@@ -1,1 +1,2 @@
-* * * * * root python /bin/monitor.py >> /var/log/monitor.log
+* * * * * root /bin/bash -lc "python3 /bin/monitor.py >> /var/log/monitor.log 2>&1"
+
